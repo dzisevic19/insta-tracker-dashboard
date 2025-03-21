@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Instagram Tracker Dashboard</h1>
+  <p><a href="/logout">Logout</a></p>
+
+  <form action="/add_account" method="POST">
+    <input type="text" name="username" placeholder="Observer Username" required>
+    <input type="text" name="target" placeholder="Target Account to Track" required>
+    <button type="submit">Add Account</button>
+  </form>
+
+  <h2>Tracked Accounts</h2>
+  <table border="1">
+    <tr><th>Observer</th><th>Target</th><th>Last Checked</th><th>Action</th></tr>
+    {% for user, info in accounts.items() %}
+      <tr>
+        <td>{{ user }}</td>
+        <td>{{ info.target }}</td>
+        <td>{{ info.last_checked or 'Never' }}</td>
+        <td><a href="/check_now/{{ user }}">Check Now</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Unfollowers Log</h2>
+  {% for target, logs in logs.items() %}
+    <h3>{{ target }}</h3>
+    <ul>
+      {% for log in logs %}
+        <li>{{ log.timestamp }}: {{ log.unfollowers | join(', ') }}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+</body>
+</html>
